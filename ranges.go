@@ -136,9 +136,9 @@ func Intersections(i Intervalable, s Set) (intersections []TaggedInterval) {
 		window := s.QuickIntervals[window_index]
 		for _, interval := range window {
 			if _, does_intersect := Intersect(i, interval) ; does_intersect {
-				fmt.Println("intersects!")
+				// fmt.Println("intersects!")
 				if _,hit := hits[interval.Index]; !hit {
-					fmt.Println("intersects!")
+					// fmt.Println("intersects!")
 					hits[interval.Index] = struct{}{}
 					intersections = append(intersections, interval)
 				}
