@@ -1,4 +1,4 @@
-package main
+package ranges
 
 import (
 	"fmt"
@@ -148,6 +148,13 @@ func Intersections(i Intervalable, s Set) (intersections []TaggedInterval) {
 	return intersections
 }
 
+func IntersectSets(s1 Set, s2 Set) (all_intersections [][]TaggedInterval) {
+	for _, interval := range s1.Intervals {
+		all_intersections = append(all_intersections, Intersections(interval, s2))
+	}
+	return all_intersections
+}
+
 // func Intersections(i Intervalable, s Set) (intersections []Interval) {
 // 	ti := TaggedIntersections(i, s)
 // 	for _, tagint := range ti {
@@ -169,16 +176,3 @@ func Intersections(i Intervalable, s Set) (intersections []TaggedInterval) {
 // 	}
 // 	return newSet
 // }
-
-func main() {
-	i := Interval{3.3, 5.5}
-	s := NewSet()
-	s.AddInterval(Interval{1.2,3.4})
-	s.AddInterval(Interval{1.1,2.2})
-	s.AddInterval(Interval{5.3,5.6})
-	s.AddInterval(Interval{3.4,5.0})
-	s.AddInterval(Interval{1.1,7.0})
-	fmt.Println(i)
-	fmt.Println(s)
-	fmt.Println(Intersections(i, s))
-}
