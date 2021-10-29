@@ -125,7 +125,7 @@ func Intersect(i Intervalable, i2 Intervalable) (intersect Interval, overlap boo
 	return intersect, overlap
 }
 
-func Intersections(i Intervalable, s Set) (intersections []TaggedInterval) {
+func TaggedIntersections(i Intervalable, s Set) (intersections []TaggedInterval) {
 	hits := make(map[int]struct{})
 	window_indices := WindowOverlapIndices(i, s.WindowSize)
 	for _, window_index := range window_indices {
@@ -144,20 +144,20 @@ func Intersections(i Intervalable, s Set) (intersections []TaggedInterval) {
 	return intersections
 }
 
-func IntersectSets(s1 Set, s2 Set) (all_intersections [][]TaggedInterval) {
+func IntersectSets(s1 Set, s2 Set) (all_intersections [][]Interval) {
 	for _, interval := range s1.Intervals {
 		all_intersections = append(all_intersections, Intersections(interval, s2))
 	}
 	return all_intersections
 }
 
-// func Intersections(i Intervalable, s Set) (intersections []Interval) {
-// 	ti := TaggedIntersections(i, s)
-// 	for _, tagint := range ti {
-// 		intersections = append(intersections, tagint.Interval)
-// 	}
-// 	return intersections
-// }
+func Intersections(i Intervalable, s Set) (intersections []Interval) {
+	ti := TaggedIntersections(i, s)
+	for _, tagint := range ti {
+		intersections = append(intersections, tagint.Interval)
+	}
+	return intersections
+}
 
 // func (s *Set) Reduce() Set {
 // 	var merged []int
