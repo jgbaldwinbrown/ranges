@@ -1,9 +1,5 @@
 package ranges
 
-import (
-	"fmt"
-)
-
 type Intervalable interface {
 	Left() float64
 	Right() float64
