@@ -10,16 +10,16 @@ type Intervalable interface {
 }
 
 type Interval struct {
-	left float64
-	right float64
+	LeftEdge float64
+	RightEdge float64
 }
 
 func (i Interval) Left() float64 {
-	return i.left
+	return i.LeftEdge
 }
 
 func (i Interval) Right() float64 {
-	return i.right
+	return i.RightEdge
 }
 
 type TaggedInterval struct {
@@ -63,7 +63,7 @@ func WindowOverlapIndices(i Intervalable, window_size float64) (indices []int) {
 func WindowOverlaps(i Intervalable, window_size float64) (overlaps []Interval) {
 	indices := WindowOverlapIndices(i, window_size)
 	for _, index := range indices {
-		overlaps = append(overlaps, Interval{left: float64(index) * window_size, right: float64(index+1) * window_size})
+		overlaps = append(overlaps, Interval{LeftEdge: float64(index) * window_size, RightEdge: float64(index+1) * window_size})
 	}
 	return overlaps
 }
@@ -73,8 +73,8 @@ func (s *Set) addIntervalInternal(i Intervalable) {
 		s.Intervals,
 		TaggedInterval{
 			Interval: Interval{
-				left: i.Left(),
-				right: i.Right(),
+				LeftEdge: i.Left(),
+				RightEdge: i.Right(),
 			},
 			Index: s.NextTag,
 		},
@@ -83,7 +83,7 @@ func (s *Set) addIntervalInternal(i Intervalable) {
 	tag := s.NextTag
 	s.NextTag++
 	newInterval := TaggedInterval{
-		Interval: Interval{left: i.Left(), right: i.Right()},
+		Interval: Interval{LeftEdge: i.Left(), RightEdge: i.Right()},
 		Index: tag,
 	}
 	for _, window_index := range windows {
@@ -123,9 +123,9 @@ func Min(f1 float64, f2 float64) float64 {
 }
 
 func Intersect(i Intervalable, i2 Intervalable) (intersect Interval, overlap bool) {
-	intersect.left = Max(i.Left(), i2.Left())
-	intersect.right = Min(i.Right(), i2.Right())
-	overlap = intersect.left < intersect.right
+	intersect.LeftEdge = Max(i.Left(), i2.Left())
+	intersect.RightEdge = Min(i.Right(), i2.Right())
+	overlap = intersect.LeftEdge < intersect.RightEdge
 	return intersect, overlap
 }
 
